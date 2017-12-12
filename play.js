@@ -1,8 +1,13 @@
 var playState = {
 
+    board : function() {
+        return new Board();
+    },
+    
     preload: function () {
-        var board = new Board();
+        board = new Board();
         board.create();
+        console.log('created board')
     },
 
     create: function () {
@@ -10,8 +15,9 @@ var playState = {
     },
 
     update: function () {
-
+        board.draw();
     },
+    
 
 }
 
