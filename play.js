@@ -6,12 +6,12 @@ var playState = {
     
     preload: function () {
         board = new Board();
-        board.create();
-        console.log('created board')
+        board.load();
+        
     },
 
     create: function () {
-        
+        board.create();
     },
 
     update: function () {
