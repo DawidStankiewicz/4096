@@ -3,11 +3,30 @@ var playState = {
     preload: function () {
         board.load();
 
+        game.load.image('drag', 'assets/drag.png');
+
     },
 
     create: function () {
         board.create();
         this.turns = 0;
+
+        console.log('creaeee');
+
+        var dg = game.add.group();
+
+        dg.inputEnableChildren = true;
+
+        this.drag = dg.create(0, 0, 'drag');
+        this.drag.alpha = 0.2;
+        //  Enable input and allow for dragging
+        this.drag.inputEnabled = true;
+        this.drag.input.enableDrag();
+        this.drag.events.onDragStart.add(playState.onDragStart, this);
+        this.drag.events.onDragStop.add(playState.onDragStop, this);
+
+        console.log('created drag');
+
     },
 
     update: function () {
@@ -56,12 +75,32 @@ var playState = {
             });
         }
 
+
+
     },
+
+    onDragStart: function (info, pointer) {
+        playState.drag.startx = pointer.x;
+        playState.drag.starty = pointer.y;
+
+        console.log('start drag ', info);
+    },
+
+    onDragStop: function (info, pointer) {
+        playState.drag.x = 0;
+        playState.drag.y = 0;
+        
+        playState.drag.startx = pointer.x;
+        playState.drag.starty = pointer.y;
+        console.log('stop drag ', info);
+        let vector = {
+            x: info.input._tempPoint.x - info.input.downPoint.x,
+            y: info.input._tempPoint.y - info.input.downPoint.y
+        };
+
+        console.log(' vector [%s,%s] ', vector.x, vector.y);
+        console.log(' pointer ', pointer);
+    }
 
 
 }
-
-
-
-
-
