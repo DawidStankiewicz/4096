@@ -79,8 +79,8 @@ var playState = {
         }
         playState.dragHandler.movedRight =
             playState.dragHandler.movedLeft =
-            playState.dragHandler.movedUp =
-            playState.dragHandler.movedDown = false;
+                playState.dragHandler.movedUp =
+                    playState.dragHandler.movedDown = false;
     },
 
     onDragStart: function (info, pointer) {

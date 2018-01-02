@@ -3,17 +3,62 @@ body {
     padding: 0;
     font-family: Arial, sans-serif;
     height: 100vh;
+    background-color: black;
+    color: #ffffff;
+    overflow: hidden;
+}
+
+.title {
+    font-size: 12em;
+    text-align: center;
+}
+
+@media screen and (max-height: 800px) {
+    .title {
+        display: none;
+        color: black;
+    }
+
+    #game {
+        align-items: center;
+    }
+}
+
+@media all and (max-height: 500px) {
+    .title {
+        display: none;
+        color: black;
+    }
+
+    .footer-content {
+        display: none;
+    }
+}
+
+.title span {
+    border-bottom: 1px solid #ffffff;
+    width: 600px;
 }
 
 #game {
     height: 90vh;
+    width: 100vw;
     display: flex;
-    display: flex;
-    align-items: center;
     justify-content: center;
+    z-index: 100;
+}
+
+a {
+    color: #ffffff;
 }
 
 footer {
-    height: 10vh;
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+}
+
+.footer-content {
     text-align: center;
+    z-index: -1;
 }

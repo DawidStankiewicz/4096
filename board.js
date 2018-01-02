@@ -11,7 +11,6 @@ var board = {
         game.load.image('cell-7', 'assets/cell-7.png');
         game.load.image('cell-8', 'assets/cell-8.png');
         game.load.image('cell-9', 'assets/cell-9.png');
-
     },
 
     create: function () {
