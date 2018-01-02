@@ -15,7 +15,7 @@ var board = {
     },
 
     create: function () {
-        console.log('Create board...');
+        console.debug('Create board...');
 
         game.add.sprite(0, 0, 'board');
 
@@ -45,14 +45,14 @@ var board = {
         this.initFields = 2;
         this.initFieldsLvl = 0;
 
-        console.log('   create [%s] initial fields...', this.initFields);
+        console.debug('   create [%s] initial fields...', this.initFields);
         this.createFields(this.initFields, this.initFieldsLvl);
 
 
         this.canMove = true;
         this.fieldMoveTime = 300; // ms
         this.fieldFadeInTime = this.fieldMoveTime;
-        console.log('Board created.');
+        console.debug('Board created.');
     },
 
     createFields: function (howMany, lvl) {
@@ -61,16 +61,16 @@ var board = {
 
         for (let created = 0; created < howMany; created++) {
             let emptyField = board.findRandomEmptyField();
-            console.log('Founded empty field at [%s,%s]', emptyField.col, emptyField.row);
+            console.debug('Founded empty field at [%s,%s]', emptyField.col, emptyField.row);
 
 
             let field = board.createField(emptyField.col, emptyField.row, lvl);
-            console.log('   and created new field at [%s,%s] lvl %s', field.col, field.row, field.lvl);
+            console.debug('   and created new field at [%s,%s] lvl %s', field.col, field.row, field.lvl);
 
 
             createdFields.push(field);
-            console.log('   and added created field to the array [%s]', createdFields.length);
-            console.log('   and now there is %s fields on the board', board.fields.length);
+            console.debug('   and added created field to the array [%s]', createdFields.length);
+            console.debug('   and now there is %s fields on the board', board.fields.length);
         }
 
 
@@ -139,53 +139,53 @@ var board = {
                 let field = board.getFields(col, row);
 
                 if (field === undefined) {
-                    console.log('FIELD [%s,%s] is EMPTY', col, row);
+                    console.debug('FIELD [%s,%s] is EMPTY', col, row);
                     if (emptyFieldRow === null) {
                         emptyFieldRow = row;
-                        console.log('   and is marked as EMPTY.');
+                        console.debug('   and is marked as EMPTY.');
                     }
                 }
 
                 if (field !== undefined) {
-                    console.log('FIELD [%s,%s] is defined on %s lvl', col, row, field.lvl);
+                    console.debug('FIELD [%s,%s] is defined on %s lvl', col, row, field.lvl);
                     if (mergeField === null || mergeField.lvl !== field.lvl) { // add this
                         mergeField = field;
-                        console.log('   and is marked as new MERGE lvl %s ', mergeField.lvl);
+                        console.debug('   and is marked as new MERGE lvl %s ', mergeField.lvl);
 
                         if (emptyFieldRow !== null) {
-                            console.log('   and there is EMPTY field [%s,%s] where this FIELD [%s,%s] lvl %s can move', col, emptyFieldRow, field.col, field.row, field.lvl);
+                            console.debug('   and there is EMPTY field [%s,%s] where this FIELD [%s,%s] lvl %s can move', col, emptyFieldRow, field.col, field.row, field.lvl);
 
                             board.moveFieldTo(field, col, emptyFieldRow, function () {
                             });
-                            console.log('   and moved FIELD [%s,%s] lvl %s to [%s,%s]', field.col, field.row, field.lvl, col, emptyFieldRow);
+                            console.debug('   and moved FIELD [%s,%s] lvl %s to [%s,%s]', field.col, field.row, field.lvl, col, emptyFieldRow);
 
                             field.col = col;
                             field.row = emptyFieldRow;
-                            console.log('   and updated FIELD lvl %s to [%s,%s]', field.lvl, field.col, field.row);
+                            console.debug('   and updated FIELD lvl %s to [%s,%s]', field.lvl, field.col, field.row);
 
                             mergeField = field;
-                            console.log('   and updated MERGE to [%s,%s] lvl %s', mergeField.col, mergeField.row, mergeField.lvl);
+                            console.debug('   and updated MERGE to [%s,%s] lvl %s', mergeField.col, mergeField.row, mergeField.lvl);
 
                             emptyFieldRow++;
-                            console.log('   and updated EMPTY to [%s,%s]', col, emptyFieldRow);
+                            console.debug('   and updated EMPTY to [%s,%s]', col, emptyFieldRow);
 
                             movedFieldCounter++;
                             movedAnyField = true;
                         }
                     }
                     else {
-                        console.log('   and there is defined MERGE lvl %s [%s,%s]', mergeField.lvl, mergeField.col, mergeField.row);
+                        console.debug('   and there is defined MERGE lvl %s [%s,%s]', mergeField.lvl, mergeField.col, mergeField.row);
 
                         let mergedField = board.mergeFields(field, mergeField);
 
-                        console.log('   merge FIELD lvl %s [%s,%s] with MERGE field lvl %s [%s,%s] complete', field.lvl, field.col, field.row, mergeField.lvl, mergeField.col, mergeField.row);
+                        console.debug('   merge FIELD lvl %s [%s,%s] with MERGE field lvl %s [%s,%s] complete', field.lvl, field.col, field.row, mergeField.lvl, mergeField.col, mergeField.row);
 
 
                         mergeField = null;
-                        console.log('   and updated MERGE to null');
+                        console.debug('   and updated MERGE to null');
 
                         emptyFieldRow = mergedField.row + 1;
-                        console.log('   and updated EMPTY to [%s,%s]', col, emptyFieldRow);
+                        console.debug('   and updated EMPTY to [%s,%s]', col, emptyFieldRow);
 
 
                         movedFieldCounter++;
@@ -195,14 +195,14 @@ var board = {
             }
         }
 
-        console.log('This turn moved %s fields', movedFieldCounter);
+        console.debug('This turn moved %s fields', movedFieldCounter);
         if (movedAnyField) {
             let createdField = board.createFields(1)[0];
             createdField.alpha = 0;
-            console.log('   and created new field lvl %s at random position [%s,%s].', createdField.lvl, createdField.col, createdField.row)
+            console.debug('   and created new field lvl %s at random position [%s,%s].', createdField.lvl, createdField.col, createdField.row)
             game.add.tween(createdField).to({alpha: 1}, board.fieldFadeInTime, Phaser.Easing.Linear.None, true);
         }
-        console.log('After this turn [%s] there is %s fields on the board', playState.turns, board.fields.length);
+        console.debug('After this turn [%s] there is %s fields on the board', playState.turns, board.fields.length);
 
     },
 
@@ -222,53 +222,53 @@ var board = {
                 let field = board.getFields(col, row);
 
                 if (field === undefined) {
-                    console.log('FIELD [%s,%s] is EMPTY', col, row);
+                    console.debug('FIELD [%s,%s] is EMPTY', col, row);
                     if (emptyFieldRow === null) {
                         emptyFieldRow = row;
-                        console.log('   and is marked as EMPTY.');
+                        console.debug('   and is marked as EMPTY.');
                     }
                 }
 
                 if (field !== undefined) {
-                    console.log('FIELD [%s,%s] is defined on %s lvl', col, row, field.lvl);
+                    console.debug('FIELD [%s,%s] is defined on %s lvl', col, row, field.lvl);
                     if (mergeField === null || mergeField.lvl !== field.lvl) { // add this
                         mergeField = field;
-                        console.log('   and is marked as new MERGE lvl %s ', mergeField.lvl);
+                        console.debug('   and is marked as new MERGE lvl %s ', mergeField.lvl);
 
                         if (emptyFieldRow !== null) {
-                            console.log('   and there is EMPTY field [%s,%s] where this FIELD [%s,%s] lvl %s can move', col, emptyFieldRow, field.col, field.row, field.lvl);
+                            console.debug('   and there is EMPTY field [%s,%s] where this FIELD [%s,%s] lvl %s can move', col, emptyFieldRow, field.col, field.row, field.lvl);
 
                             board.moveFieldTo(field, col, emptyFieldRow, function () {
                             });
-                            console.log('   and moved FIELD [%s,%s] lvl %s to [%s,%s]', field.col, field.row, field.lvl, col, emptyFieldRow);
+                            console.debug('   and moved FIELD [%s,%s] lvl %s to [%s,%s]', field.col, field.row, field.lvl, col, emptyFieldRow);
 
                             field.col = col;
                             field.row = emptyFieldRow;
-                            console.log('   and updated FIELD lvl %s to [%s,%s]', field.lvl, field.col, field.row);
+                            console.debug('   and updated FIELD lvl %s to [%s,%s]', field.lvl, field.col, field.row);
 
                             mergeField = field;
-                            console.log('   and updated MERGE to [%s,%s] lvl %s', mergeField.col, mergeField.row, mergeField.lvl);
+                            console.debug('   and updated MERGE to [%s,%s] lvl %s', mergeField.col, mergeField.row, mergeField.lvl);
 
                             emptyFieldRow--; // one up
-                            console.log('   and updated EMPTY to [%s,%s]', col, emptyFieldRow);
+                            console.debug('   and updated EMPTY to [%s,%s]', col, emptyFieldRow);
 
                             movedFieldCounter++;
                             movedAnyField = true;
                         }
                     }
                     else {
-                        console.log('   and there is defined MERGE lvl %s [%s,%s]', mergeField.lvl, mergeField.col, mergeField.row);
+                        console.debug('   and there is defined MERGE lvl %s [%s,%s]', mergeField.lvl, mergeField.col, mergeField.row);
 
                         let mergedField = board.mergeFields(field, mergeField);
 
-                        console.log('   merge FIELD lvl %s [%s,%s] with MERGE field lvl %s [%s,%s] complete', field.lvl, field.col, field.row, mergeField.lvl, mergeField.col, mergeField.row);
+                        console.debug('   merge FIELD lvl %s [%s,%s] with MERGE field lvl %s [%s,%s] complete', field.lvl, field.col, field.row, mergeField.lvl, mergeField.col, mergeField.row);
 
 
                         mergeField = null;
-                        console.log('   and updated MERGE to null');
+                        console.debug('   and updated MERGE to null');
 
                         emptyFieldRow = mergedField.row - 1; // one up
-                        console.log('   and updated EMPTY to [%s,%s]', col, emptyFieldRow);
+                        console.debug('   and updated EMPTY to [%s,%s]', col, emptyFieldRow);
 
 
                         movedFieldCounter++;
@@ -278,14 +278,14 @@ var board = {
             }
         }
 
-        console.log('This turn moved %s fields', movedFieldCounter);
+        console.debug('This turn moved %s fields', movedFieldCounter);
         if (movedAnyField) {
             let createdField = board.createFields(1)[0];
             createdField.alpha = 0;
-            console.log('   and created new field lvl %s at random position [%s,%s].', createdField.lvl, createdField.col, createdField.row)
+            console.debug('   and created new field lvl %s at random position [%s,%s].', createdField.lvl, createdField.col, createdField.row)
             game.add.tween(createdField).to({alpha: 1}, board.fieldFadeInTime, Phaser.Easing.Linear.None, true);
         }
-        console.log('After this turn [%s] there is %s fields on the board', playState.turns, board.fields.length);
+        console.debug('After this turn [%s] there is %s fields on the board', playState.turns, board.fields.length);
 
     },
 
@@ -304,53 +304,53 @@ var board = {
                 let field = board.getFields(col, row);
 
                 if (field === undefined) {
-                    console.log('FIELD [%s,%s] is EMPTY', col, row);
+                    console.debug('FIELD [%s,%s] is EMPTY', col, row);
                     if (emptyFieldCol === null) {
                         emptyFieldCol = col;
-                        console.log('   and is marked as EMPTY.');
+                        console.debug('   and is marked as EMPTY.');
                     }
                 }
 
                 if (field !== undefined) {
-                    console.log('FIELD [%s,%s] is defined on %s lvl', col, row, field.lvl);
+                    console.debug('FIELD [%s,%s] is defined on %s lvl', col, row, field.lvl);
                     if (mergeField === null || mergeField.lvl !== field.lvl) {
                         mergeField = field;
-                        console.log('   and is marked as new MERGE lvl %s ', mergeField.lvl);
+                        console.debug('   and is marked as new MERGE lvl %s ', mergeField.lvl);
 
                         if (emptyFieldCol !== null) {
-                            console.log('   and there is EMPTY field [%s,%s] where this FIELD [%s,%s] lvl %s can move', emptyFieldCol, row, field.col, field.row, field.lvl);
+                            console.debug('   and there is EMPTY field [%s,%s] where this FIELD [%s,%s] lvl %s can move', emptyFieldCol, row, field.col, field.row, field.lvl);
 
                             board.moveFieldTo(field, emptyFieldCol, row, function () {
                             });
-                            console.log('   and moved FIELD [%s,%s] lvl %s to [%s,%s]', field.col, field.row, field.lvl, emptyFieldCol, row);
+                            console.debug('   and moved FIELD [%s,%s] lvl %s to [%s,%s]', field.col, field.row, field.lvl, emptyFieldCol, row);
 
                             field.col = emptyFieldCol;
                             field.row = row;
-                            console.log('   and updated FIELD lvl %s to [%s,%s]', field.lvl, field.col, field.row);
+                            console.debug('   and updated FIELD lvl %s to [%s,%s]', field.lvl, field.col, field.row);
 
                             mergeField = field;
-                            console.log('   and updated MERGE to [%s,%s] lvl %s', mergeField.col, mergeField.row, mergeField.lvl);
+                            console.debug('   and updated MERGE to [%s,%s] lvl %s', mergeField.col, mergeField.row, mergeField.lvl);
 
                             emptyFieldCol++; // one right
-                            console.log('   and updated EMPTY to [%s,%s]', emptyFieldCol, row);
+                            console.debug('   and updated EMPTY to [%s,%s]', emptyFieldCol, row);
 
                             movedFieldCounter++;
                             movedAnyField = true;
                         }
                     }
                     else {
-                        console.log('   and there is defined MERGE lvl %s [%s,%s]', mergeField.lvl, mergeField.col, mergeField.row);
+                        console.debug('   and there is defined MERGE lvl %s [%s,%s]', mergeField.lvl, mergeField.col, mergeField.row);
 
                         let mergedField = board.mergeFields(field, mergeField);
 
-                        console.log('   merge FIELD lvl %s [%s,%s] with MERGE field lvl %s [%s,%s] complete', field.lvl, field.col, field.row, mergeField.lvl, mergeField.col, mergeField.row);
+                        console.debug('   merge FIELD lvl %s [%s,%s] with MERGE field lvl %s [%s,%s] complete', field.lvl, field.col, field.row, mergeField.lvl, mergeField.col, mergeField.row);
 
 
                         mergeField = null;
-                        console.log('   and updated MERGE to null');
+                        console.debug('   and updated MERGE to null');
 
                         emptyFieldCol = mergedField.col + 1; // one right
-                        console.log('   and updated EMPTY to [%s,%s]', emptyFieldCol, row);
+                        console.debug('   and updated EMPTY to [%s,%s]', emptyFieldCol, row);
 
 
                         movedFieldCounter++;
@@ -360,14 +360,14 @@ var board = {
             }
         }
 
-        console.log('This turn moved %s fields', movedFieldCounter);
+        console.debug('This turn moved %s fields', movedFieldCounter);
         if (movedAnyField) {
             let createdField = board.createFields(1)[0];
             createdField.alpha = 0;
-            console.log('   and created new field lvl %s at random position [%s,%s].', createdField.lvl, createdField.col, createdField.row)
+            console.debug('   and created new field lvl %s at random position [%s,%s].', createdField.lvl, createdField.col, createdField.row)
             game.add.tween(createdField).to({alpha: 1}, board.fieldFadeInTime, Phaser.Easing.Linear.None, true);
         }
-        console.log('After this turn [%s] there is %s fields on the board', playState.turns, board.fields.length);
+        console.debug('After this turn [%s] there is %s fields on the board', playState.turns, board.fields.length);
 
     },
 
@@ -386,53 +386,53 @@ var board = {
                 let field = board.getFields(col, row);
 
                 if (field === undefined) {
-                    console.log('FIELD [%s,%s] is EMPTY', col, row);
+                    console.debug('FIELD [%s,%s] is EMPTY', col, row);
                     if (emptyFieldCol === null) {
                         emptyFieldCol = col;
-                        console.log('   and is marked as EMPTY.');
+                        console.debug('   and is marked as EMPTY.');
                     }
                 }
 
                 if (field !== undefined) {
-                    console.log('FIELD [%s,%s] is defined on %s lvl', col, row, field.lvl);
+                    console.debug('FIELD [%s,%s] is defined on %s lvl', col, row, field.lvl);
                     if (mergeField === null || mergeField.lvl !== field.lvl) {
                         mergeField = field;
-                        console.log('   and is marked as new MERGE lvl %s ', mergeField.lvl);
+                        console.debug('   and is marked as new MERGE lvl %s ', mergeField.lvl);
 
                         if (emptyFieldCol !== null) {
-                            console.log('   and there is EMPTY field [%s,%s] where this FIELD [%s,%s] lvl %s can move', emptyFieldCol, row, field.col, field.row, field.lvl);
+                            console.debug('   and there is EMPTY field [%s,%s] where this FIELD [%s,%s] lvl %s can move', emptyFieldCol, row, field.col, field.row, field.lvl);
 
                             board.moveFieldTo(field, emptyFieldCol, row, function () {
                             });
-                            console.log('   and moved FIELD [%s,%s] lvl %s to [%s,%s]', field.col, field.row, field.lvl, emptyFieldCol, row);
+                            console.debug('   and moved FIELD [%s,%s] lvl %s to [%s,%s]', field.col, field.row, field.lvl, emptyFieldCol, row);
 
                             field.col = emptyFieldCol;
                             field.row = row;
-                            console.log('   and updated FIELD lvl %s to [%s,%s]', field.lvl, field.col, field.row);
+                            console.debug('   and updated FIELD lvl %s to [%s,%s]', field.lvl, field.col, field.row);
 
                             mergeField = field;
-                            console.log('   and updated MERGE to [%s,%s] lvl %s', mergeField.col, mergeField.row, mergeField.lvl);
+                            console.debug('   and updated MERGE to [%s,%s] lvl %s', mergeField.col, mergeField.row, mergeField.lvl);
 
                             emptyFieldCol--; // one left
-                            console.log('   and updated EMPTY to [%s,%s]', emptyFieldCol, row);
+                            console.debug('   and updated EMPTY to [%s,%s]', emptyFieldCol, row);
 
                             movedFieldCounter++;
                             movedAnyField = true;
                         }
                     }
                     else {
-                        console.log('   and there is defined MERGE lvl %s [%s,%s]', mergeField.lvl, mergeField.col, mergeField.row);
+                        console.debug('   and there is defined MERGE lvl %s [%s,%s]', mergeField.lvl, mergeField.col, mergeField.row);
 
                         let mergedField = board.mergeFields(field, mergeField);
 
-                        console.log('   merge FIELD lvl %s [%s,%s] with MERGE field lvl %s [%s,%s] complete', field.lvl, field.col, field.row, mergeField.lvl, mergeField.col, mergeField.row);
+                        console.debug('   merge FIELD lvl %s [%s,%s] with MERGE field lvl %s [%s,%s] complete', field.lvl, field.col, field.row, mergeField.lvl, mergeField.col, mergeField.row);
 
 
                         mergeField = null;
-                        console.log('   and updated MERGE to null');
+                        console.debug('   and updated MERGE to null');
 
                         emptyFieldCol = mergedField.col - 1; // one left
-                        console.log('   and updated EMPTY to [%s,%s]', emptyFieldCol, row);
+                        console.debug('   and updated EMPTY to [%s,%s]', emptyFieldCol, row);
 
 
                         movedFieldCounter++;
@@ -442,14 +442,14 @@ var board = {
             }
         }
 
-        console.log('This turn moved %s fields', movedFieldCounter);
+        console.debug('This turn moved %s fields', movedFieldCounter);
         if (movedAnyField) {
             let createdField = board.createFields(1)[0];
             createdField.alpha = 0;
-            console.log('   and created new field lvl %s at random position [%s,%s].', createdField.lvl, createdField.col, createdField.row)
+            console.debug('   and created new field lvl %s at random position [%s,%s].', createdField.lvl, createdField.col, createdField.row)
             game.add.tween(createdField).to({alpha: 1}, board.fieldFadeInTime, Phaser.Easing.Linear.None, true);
         }
-        console.log('After this turn [%s] there is %s fields on the board', playState.turns, board.fields.length);
+        console.debug('After this turn [%s] there is %s fields on the board', playState.turns, board.fields.length);
 
     },
 
@@ -482,7 +482,7 @@ var board = {
         mergedField.alpha = 0;
         game.add.tween(mergedField).to({alpha: 1}, board.fieldFadeInTime, Phaser.Easing.Linear.None, true);
 
-        console.log('   created MERGED FIELD lvl %s at [%s,%s]', mergedField.lvl, mergedField.col, mergedField.row);
+        console.debug('   created MERGED FIELD lvl %s at [%s,%s]', mergedField.lvl, mergedField.col, mergedField.row);
 
         game.time.events.add(300, function () {
             field.destroy();
