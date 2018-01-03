@@ -91,18 +91,27 @@ var board = {
         return this.fields.children.filter((field) => field.col === col && field.row === row)[0];
     },
 
+    isEmptyField: function () {
+        let allFields = this.cols * this.rows;
+        return this.fields.children.length !== allFields;
+    },
+
     findRandomEmptyField: function () {
+        console.debug('Find random empty field')
         let found = false;
         let col, row;
 
-        while (!found) {
+        while (this.isEmptyField() && !found) {
             col = Math.round(Math.random() * (board.cols - 1));
             row = Math.round(Math.random() * (board.rows - 1));
 
-            found = isFieldEmpty(col, row);
+            found = this.isFieldEmpty(col, row);
         }
 
-        return {col, row};
+        return {
+            col,
+            row
+        };
     },
 
     moveUp: function () {
@@ -154,8 +163,7 @@ var board = {
                         if (emptyFieldRow !== null) {
                             console.debug('   and there is EMPTY field [%s,%s] where this FIELD [%s,%s] lvl %s can move', col, emptyFieldRow, field.col, field.row, field.lvl);
 
-                            board.moveFieldTo(field, col, emptyFieldRow, function () {
-                            });
+                            board.moveFieldTo(field, col, emptyFieldRow, function () {});
                             console.debug('   and moved FIELD [%s,%s] lvl %s to [%s,%s]', field.col, field.row, field.lvl, col, emptyFieldRow);
 
                             field.col = col;
@@ -171,8 +179,7 @@ var board = {
                             movedFieldCounter++;
                             movedAnyField = true;
                         }
-                    }
-                    else {
+                    } else {
                         console.debug('   and there is defined MERGE lvl %s [%s,%s]', mergeField.lvl, mergeField.col, mergeField.row);
 
                         let mergedField = board.mergeFields(field, mergeField);
@@ -199,7 +206,9 @@ var board = {
             let createdField = board.createFields(1)[0];
             createdField.alpha = 0;
             console.debug('   and created new field lvl %s at random position [%s,%s].', createdField.lvl, createdField.col, createdField.row)
-            game.add.tween(createdField).to({alpha: 1}, board.fieldFadeInTime, Phaser.Easing.Linear.None, true);
+            game.add.tween(createdField).to({
+                alpha: 1
+            }, board.fieldFadeInTime, Phaser.Easing.Linear.None, true);
         }
         console.debug('After this turn [%s] there is %s fields on the board', playState.turns, board.fields.length);
 
@@ -237,8 +246,7 @@ var board = {
                         if (emptyFieldRow !== null) {
                             console.debug('   and there is EMPTY field [%s,%s] where this FIELD [%s,%s] lvl %s can move', col, emptyFieldRow, field.col, field.row, field.lvl);
 
-                            board.moveFieldTo(field, col, emptyFieldRow, function () {
-                            });
+                            board.moveFieldTo(field, col, emptyFieldRow, function () {});
                             console.debug('   and moved FIELD [%s,%s] lvl %s to [%s,%s]', field.col, field.row, field.lvl, col, emptyFieldRow);
 
                             field.col = col;
@@ -254,8 +262,7 @@ var board = {
                             movedFieldCounter++;
                             movedAnyField = true;
                         }
-                    }
-                    else {
+                    } else {
                         console.debug('   and there is defined MERGE lvl %s [%s,%s]', mergeField.lvl, mergeField.col, mergeField.row);
 
                         let mergedField = board.mergeFields(field, mergeField);
@@ -282,7 +289,9 @@ var board = {
             let createdField = board.createFields(1)[0];
             createdField.alpha = 0;
             console.debug('   and created new field lvl %s at random position [%s,%s].', createdField.lvl, createdField.col, createdField.row)
-            game.add.tween(createdField).to({alpha: 1}, board.fieldFadeInTime, Phaser.Easing.Linear.None, true);
+            game.add.tween(createdField).to({
+                alpha: 1
+            }, board.fieldFadeInTime, Phaser.Easing.Linear.None, true);
         }
         console.debug('After this turn [%s] there is %s fields on the board', playState.turns, board.fields.length);
 
@@ -319,8 +328,7 @@ var board = {
                         if (emptyFieldCol !== null) {
                             console.debug('   and there is EMPTY field [%s,%s] where this FIELD [%s,%s] lvl %s can move', emptyFieldCol, row, field.col, field.row, field.lvl);
 
-                            board.moveFieldTo(field, emptyFieldCol, row, function () {
-                            });
+                            board.moveFieldTo(field, emptyFieldCol, row, function () {});
                             console.debug('   and moved FIELD [%s,%s] lvl %s to [%s,%s]', field.col, field.row, field.lvl, emptyFieldCol, row);
 
                             field.col = emptyFieldCol;
@@ -336,8 +344,7 @@ var board = {
                             movedFieldCounter++;
                             movedAnyField = true;
                         }
-                    }
-                    else {
+                    } else {
                         console.debug('   and there is defined MERGE lvl %s [%s,%s]', mergeField.lvl, mergeField.col, mergeField.row);
 
                         let mergedField = board.mergeFields(field, mergeField);
@@ -364,7 +371,9 @@ var board = {
             let createdField = board.createFields(1)[0];
             createdField.alpha = 0;
             console.debug('   and created new field lvl %s at random position [%s,%s].', createdField.lvl, createdField.col, createdField.row)
-            game.add.tween(createdField).to({alpha: 1}, board.fieldFadeInTime, Phaser.Easing.Linear.None, true);
+            game.add.tween(createdField).to({
+                alpha: 1
+            }, board.fieldFadeInTime, Phaser.Easing.Linear.None, true);
         }
         console.debug('After this turn [%s] there is %s fields on the board', playState.turns, board.fields.length);
 
@@ -401,8 +410,7 @@ var board = {
                         if (emptyFieldCol !== null) {
                             console.debug('   and there is EMPTY field [%s,%s] where this FIELD [%s,%s] lvl %s can move', emptyFieldCol, row, field.col, field.row, field.lvl);
 
-                            board.moveFieldTo(field, emptyFieldCol, row, function () {
-                            });
+                            board.moveFieldTo(field, emptyFieldCol, row, function () {});
                             console.debug('   and moved FIELD [%s,%s] lvl %s to [%s,%s]', field.col, field.row, field.lvl, emptyFieldCol, row);
 
                             field.col = emptyFieldCol;
@@ -418,8 +426,7 @@ var board = {
                             movedFieldCounter++;
                             movedAnyField = true;
                         }
-                    }
-                    else {
+                    } else {
                         console.debug('   and there is defined MERGE lvl %s [%s,%s]', mergeField.lvl, mergeField.col, mergeField.row);
 
                         let mergedField = board.mergeFields(field, mergeField);
@@ -446,7 +453,9 @@ var board = {
             let createdField = board.createFields(1)[0];
             createdField.alpha = 0;
             console.debug('   and created new field lvl %s at random position [%s,%s].', createdField.lvl, createdField.col, createdField.row)
-            game.add.tween(createdField).to({alpha: 1}, board.fieldFadeInTime, Phaser.Easing.Linear.None, true);
+            game.add.tween(createdField).to({
+                alpha: 1
+            }, board.fieldFadeInTime, Phaser.Easing.Linear.None, true);
         }
         console.debug('After this turn [%s] there is %s fields on the board', playState.turns, board.fields.length);
 
@@ -454,7 +463,10 @@ var board = {
 
 
     moveTo: function (field, x, y, time, callback) {
-        let moveTween = game.add.tween(field).to({x: x, y: y}, time, Phaser.Easing.Back.Out, true);
+        let moveTween = game.add.tween(field).to({
+            x: x,
+            y: y
+        }, time, Phaser.Easing.Back.Out, true);
         if (callback) {
             moveTween.onComplete.add(callback);
         }
@@ -475,11 +487,16 @@ var board = {
 
         let mergedLvl = mergeField.lvl + 1;
 
-        game.add.tween(field).to({x: mergeField.x, y: mergeField.y}, board.fieldMoveTime, Phaser.Easing.Back.Out, true);
+        game.add.tween(field).to({
+            x: mergeField.x,
+            y: mergeField.y
+        }, board.fieldMoveTime, Phaser.Easing.Back.Out, true);
 
         mergedField = board.createField(mergeField.col, mergeField.row, mergedLvl);
         mergedField.alpha = 0;
-        game.add.tween(mergedField).to({alpha: 1}, board.fieldFadeInTime, Phaser.Easing.Linear.None, true);
+        game.add.tween(mergedField).to({
+            alpha: 1
+        }, board.fieldFadeInTime, Phaser.Easing.Linear.None, true);
 
         console.debug('   created MERGED FIELD lvl %s at [%s,%s]', mergedField.lvl, mergedField.col, mergedField.row);
 
@@ -489,13 +506,35 @@ var board = {
         });
 
         return mergedField;
+    },
+
+
+    isFieldEmpty: function (col, row) {
+        return board.fields.children.filter(function (f) {
+            return (row === f.row && col === f.col);
+        }).length === 0;
+    },
+
+    isNextMove: function () {
+        if (board.isFieldEmpty()) return true;
+
+        let fields = board.fields.children;
+        for (let i = 0; i < fields.length; i++) {
+
+            if (i >= board.cols) {
+                if (fields[i].val == fields[i - board.col].val) return true;
+            }
+            if (i < fields.length - board.cols) {
+                if (fields[i].val == fields[i + board.col].val) return true;
+            }
+            if (i > 0) {
+                if (fields[i].val == fields[i - 1].val) return true;
+            }
+            if (i < fields.length) {
+                if (fields[i].val == fields[i + 1].val) return true;
+            }
+        }
+        return false;
     }
 }
 
-isFieldEmpty = function (col, row) {
-
-    return board.fields.children.filter(function (f) {
-        return (row === f.row && col === f.col);
-    }).length === 0;
-
-}

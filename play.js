@@ -28,59 +28,61 @@ var playState = {
     },
 
     update: function () {
-        this.updateMove();
+        if (this.isGameOver()) {
+            this.gameOver();
+        } else {
+            this.updateMove();
+        }
     },
 
     updateMove: function () {
         cursors = game.input.keyboard.createCursorKeys();
-
+        let dir;
         if ((cursors.up.isDown || playState.dragHandler.movedUp) && board.canMove) {
-            console.debug('move up');
-            this.turns++;
-            board.moveUp();
-
-            board.canMove = false;
-            game.time.events.add(300, function () {
-                board.canMove = true;
-            });
+            this.move('up');
         }
 
         if ((cursors.down.isDown || playState.dragHandler.movedDown) && board.canMove) {
-            console.debug('move down');
-            this.turns++;
-            board.moveDown();
-
-            board.canMove = false;
-            game.time.events.add(300, function () {
-                board.canMove = true;
-            });
+            this.move('down');
         }
 
         if ((cursors.left.isDown || playState.dragHandler.movedLeft) && board.canMove) {
-            console.debug('move left');
-            this.turns++;
-            board.moveLeft();
-
-            board.canMove = false;
-            game.time.events.add(300, function () {
-                board.canMove = true;
-            });
+            this.move('left');
         }
 
         if ((cursors.right.isDown || playState.dragHandler.movedRight) && board.canMove) {
-            console.debug('move right');
-            this.turns++;
-            board.moveRight();
-
-            board.canMove = false;
-            game.time.events.add(300, function () {
-                board.canMove = true;
-            });
+            this.move('right');
         }
+
+
         playState.dragHandler.movedRight =
             playState.dragHandler.movedLeft =
-                playState.dragHandler.movedUp =
-                    playState.dragHandler.movedDown = false;
+            playState.dragHandler.movedUp =
+            playState.dragHandler.movedDown = false;
+    },
+
+    move: function (dir) {
+        this.turns++;
+        board.canMove = false;
+
+        switch (dir) {
+            case 'up':
+                board.moveUp();
+                break;
+            case 'down':
+                board.moveDown();
+                break;
+            case 'left':
+                board.moveLeft();
+                break;
+            case 'right':
+                board.moveRight();
+                break;
+        }
+
+        game.time.events.add(300, function () {
+            board.canMove = true;
+        });
     },
 
     onDragStart: function (info, pointer) {
@@ -126,5 +128,14 @@ var playState = {
 
             playState.dragHandler.movedUp = true;
         }
+    },
+
+    isGameOver: function () {
+        return !board.isNextMove();
+    },
+
+    gameOver: function () {
+        alert('game over');
+        game.restart();
     }
 }
