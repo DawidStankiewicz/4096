@@ -40,8 +40,8 @@ var board = {
             'cell-9',
         ];
 
-        this.newFieldRate = 0.1;
-        this.initFields = 2;
+        this.newFieldRate = 0.5;
+        this.initFields = 6;
         this.initFieldsLvl = 0;
 
         console.debug('   create [%s] initial fields...', this.initFields);
@@ -91,7 +91,7 @@ var board = {
         return this.fields.children.filter((field) => field.col === col && field.row === row)[0];
     },
 
-    isEmptyField: function () {
+    isAnyEmptyField: function () {
         let allFields = this.cols * this.rows;
         return this.fields.children.length !== allFields;
     },
@@ -101,7 +101,7 @@ var board = {
         let found = false;
         let col, row;
 
-        while (this.isEmptyField() && !found) {
+        while (this.isAnyEmptyField() && !found) {
             col = Math.round(Math.random() * (board.cols - 1));
             row = Math.round(Math.random() * (board.rows - 1));
 
@@ -133,6 +133,38 @@ var board = {
 
             if there is field to merge (find field to merge) -> move to and merge
             else if there is free field (find free field) -> move to
+            
+            
+            
+            TODO
+            ---- 
+            
+            if vector = right 
+            x = 1
+            y = 0
+
+            left 
+            x = -1
+            y = 0
+
+            down 
+            x = 0
+            y = 1 
+
+            up 
+            x = 0
+            y = -1
+
+            for 0..n
+                tmp grid[x][y] = i
+
+            if vector==left 
+                grid.x reverse
+
+            if vector==up
+                grid.y reverse
+
+
          */
 
         let movedAnyField = false;
@@ -516,24 +548,12 @@ var board = {
     },
 
     isNextMove: function () {
-        if (board.isFieldEmpty()) return true;
-
-        let fields = board.fields.children;
-        for (let i = 0; i < fields.length; i++) {
-
-            if (i >= board.cols) {
-                if (fields[i].val == fields[i - board.col].val) return true;
-            }
-            if (i < fields.length - board.cols) {
-                if (fields[i].val == fields[i + board.col].val) return true;
-            }
-            if (i > 0) {
-                if (fields[i].val == fields[i - 1].val) return true;
-            }
-            if (i < fields.length) {
-                if (fields[i].val == fields[i + 1].val) return true;
-            }
+        console.debug('Check if there is next move');
+        if (board.isAnyEmptyField()) {
+            console.debug('   there is at leat one empty field')
+            return true;
         }
+        
         return false;
     }
 }

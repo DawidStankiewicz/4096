@@ -10,6 +10,7 @@ var playState = {
         board.create();
         this.turns = 0;
         this.initDragHandler();
+        this.endGame = false;
     },
 
     initDragHandler: function () {
@@ -28,7 +29,7 @@ var playState = {
     },
 
     update: function () {
-        if (this.isGameOver()) {
+        if (this.endGame) {
             this.gameOver();
         } else {
             this.updateMove();
@@ -59,6 +60,7 @@ var playState = {
             playState.dragHandler.movedLeft =
             playState.dragHandler.movedUp =
             playState.dragHandler.movedDown = false;
+        this.endGame = this.isGameOver();
     },
 
     move: function (dir) {
